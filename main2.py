@@ -10,18 +10,22 @@ st.set_page_config(page_title='Data Visualizer',
                    page_icon='📊')
 
 # Title
-st.title('📊  Data Visualizer')
+st.title('📊  Data Visualizer - WEB application')
+
+# getting the work directory of main.py
 
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Specify the folder where your CSV files are located
-folder_path = f"{working_dir}/datas"  # Update this to your folder path
+folder_path = f"{working_dir}/datas"  
 
-# List all files in the folder
+# List all files in the  data folder
 files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
 
 # Dropdown to select a file
 selected_file = st.selectbox('Select a file', files, index=None)
+
+st.write(selected_file)
 
 if selected_file:
     # Construct the full path to the file
@@ -47,6 +51,10 @@ if selected_file:
         # Allow the user to select the type of plot
         plot_type = st.selectbox('Select the type of plot', options=plot_list)
 
+        st.write("X axis selected is:--- ",x_axis)
+        st.write("Y axis selected is :---- ",y_axis)
+        st.write("Visualization type selected is :--- ",plot_type)
+
     # Generate the plot based on user selection
     if st.button('Generate Plot'):
 
@@ -60,10 +68,10 @@ if selected_file:
             sns.scatterplot(x=df[x_axis], y=df[y_axis], ax=ax)
         elif plot_type == 'Distribution Plot':
             sns.histplot(df[x_axis], kde=True, ax=ax)
-            y_axis='Density'
+            ax.set_ylabel(y_axis)
         elif plot_type == 'Count Plot':
             sns.countplot(x=df[x_axis], ax=ax)
-            y_axis = 'Count'
+            ax.set_ylabel(y_axis) 
 
         # Adjust label sizes
         ax.tick_params(axis='x', labelsize=10)  # Adjust x-axis label size
